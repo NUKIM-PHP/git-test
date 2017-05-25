@@ -14,7 +14,7 @@ addons:
         packages:
             - sshpass
 script:
-    - phpunit test/test.php
+    - phpunit .
 after_success:
     - tar -zcf package.tgz *
     - export SSHPASS=$PASS
