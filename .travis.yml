@@ -1,0 +1,22 @@
+language:
+    - php
+php:
+    - 7.0
+env:
+    global:
+        - secure: "rK/3Mdjs3Tx3XFrYA5waoxZQMeLzoRJJvpGn4Bv8VwGMm5yb8wKO6oqyjS/bx6tBR37pq3PG0zwjnEjoDnBmxrjqzZHIHm2bvjJrEwEbicyxjN8pUpYMUrO+Q5Y/PuUs8pBOMfi2DoZ0XIq2DCyj3j4TK7gba7GjJNxVVqusTYppcf4BZc8yzDuuG8csMNMTQB7sQZdocgq/bnjG2eWT0l7R1V9/P7wy+heSY3tll349e1zfqbhKeWPIWNguT0V73O4Jw/eoSxmchrMEGKNGoU2H8j/tGAPdyj1OrVtgeZl74fRNELtu19sns5PPpFFg9I/a2L10U9GJbPdHGcSQfHwCH+uYRlsV6g3xBVh8JkE2eWBevMZUy/+bDZnNtrIKcqQQBymvH5sL0wcbYoqn4sYz3ZWHB2TE96PzuLvYr90pIMVS/Jrp+yI5t5YlAzlh/rcpY/aPPu5Vy+AuAskkBHuv3csNRztIyfO41URNWNfHvWZ209eIM9g62Z6o2YhJwMslJNE9zmiEdm1duo16l8XAv2BB1mCPgRwLNEbZA84IwQz4R1f5OTOE82x4kOwrtebkKF5JZNEzDaZFJ62Jlk829HJz7Lz6PEr/KTV/d2z6zRfVEvItJ199g/rjZpa5sOLNgEVHaKeWW6bpg/r2YQ0tMPUNreR+2bigWt2LxAs="
+        - secure: "Wi7tXmusuLyr5Klzp8D2PWC0vYbRFRcBPaxWdrZojqIPnzYq+26kAP0jImYyMSvKmLVYCaOAWcUqKUXge8X3aYYNZ8+UMybyHuuMsJmNOVDvpIT3sd1EnoXQ3FlhwFL0kbs/CTrdqg33M+ZQY2bvpqWvNInOSOv//7hPD9H7vRiNt8fr8NZMBbb8uYkdtoTzP6pXY92VAqLhuA1CL8M+zzH4HjIQdMWl/X1v/i9tyhld/eZBFB5+PmnLQ3tIhfjM2YMN8UkyhC4nX7oC9eCVF9wRm10/8+V7TvNnePebUvf3K0Rbydzua5JBOqPotkMCI2Swz0gNS5wFgxrLO+5PXeCLbbtofJJ1ooVJ6S10XvdtZweBqo4QaZqb5vdUZNF+mGpWb9otQrfmqt1dj2dY2LgUMVp3fiNxfjo6TO+Y5LZoTlHH9mh/nPSSBMBFkm5W55wXDM0REFWrR3eTguQgEXyo0D5jMddPuKOnLnkPw9HIixQ4c4LpBVfs/H14UIoTGEJb7S5S7GoMKZkwheQD1sv8KFntu0lkEAK6MrfykNtSgiuNZEZKFex6twBAIlw5rY/smiDuWDzBLZCU2/SD/+r79GnZekk7UyTGXZG6cubqMRKct6Qnd7QZWE2ccD5iM5i0wrolb4qgTI+mpQN3yPX9aqJ0hGIImO1axhwVc6Y=:
+        - secure: "Wi7tXmusuLyr5Klzp8D2PWC0vYbRFRcBPaxWdrZojqIPnzYq+26kAP0jImYyMSvKmLVYCaOAWcUqKUXge8X3aYYNZ8+UMybyHuuMsJmNOVDvpIT3sd1EnoXQ3FlhwFL0kbs/CTrdqg33M+ZQY2bvpqWvNInOSOv//7hPD9H7vRiNt8fr8NZMBbb8uYkdtoTzP6pXY92VAqLhuA1CL8M+zzH4HjIQdMWl/X1v/i9tyhld/eZBFB5+PmnLQ3tIhfjM2YMN8UkyhC4nX7oC9eCVF9wRm10/8+V7TvNnePebUvf3K0Rbydzua5JBOqPotkMCI2Swz0gNS5wFgxrLO+5PXeCLbbtofJJ1ooVJ6S10XvdtZweBqo4QaZqb5vdUZNF+mGpWb9otQrfmqt1dj2dY2LgUMVp3fiNxfjo6TO+Y5LZoTlHH9mh/nPSSBMBFkm5W55wXDM0REFWrR3eTguQgEXyo0D5jMddPuKOnLnkPw9HIixQ4c4LpBVfs/H14UIoTGEJb7S5S7GoMKZkwheQD1sv8KFntu0lkEAK6MrfykNtSgiuNZEZKFex6twBAIlw5rY/smiDuWDzBLZCU2/SD/+r79GnZekk7UyTGXZG6cubqMRKct6Qnd7QZWE2ccD5iM5i0wrolb4qgTI+mpQN3yPX9aqJ0hGIImO1axhwVc6Y="
+addons:
+    ssh_known_hosts:
+        - vps.noob.tw
+    apt:
+        packages:
+            - sshpass
+script:
+    - phpunit test/test.php
+after_success:
+    - tar -zcf package.tgz *
+    - export SSHPASS=$PASS
+    - sshpass -e scp package.tgz $USER@$HOST:/var/www/html/nukim-php
+    - sshpass -e ssh $USER@$HOST "cd /var/www/html/nukim-php; tar -zxf package.tgz; rm package.tgz; echo Find. Deployed.;"
